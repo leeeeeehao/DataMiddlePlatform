@@ -1,0 +1,47 @@
+#端口号
+server:
+  port: 9007
+  servlet:
+    context-path: /datamiddleend/
+
+spring:
+  #应用名称
+  application:
+    name: data-middleend
+
+  #数据源
+  datasource:
+    #mysql driver
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.200.67:3306/newkettle?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: saasbackend!
+
+    druid:
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      #pool-prepared-statements: true
+      #max-pool-prepared-statement-per-connection-size: 20
+      #time-between-eviction-runs-millis: 60000
+      #min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      filters: stat,log4j,config
+
+#Mybatis
+mybatis:
+  # 搜索指定包别名
+  typeAliasesPackage: com.saas.datamiddleend
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath:mapper/*/*.xml
+  # 加载全局的配置文件
+  configLocation: classpath:config/mybatis-config.xml
+
+#分页工具
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql

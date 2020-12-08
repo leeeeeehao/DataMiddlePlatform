@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.datamiddleend.dao.database.RDatabaseMapper">
+  <resultMap id="BaseResultMap" type="com.saas.datamiddleend.entity.domain.database.RDatabase">
+    <id column="ID_DATABASE" jdbcType="BIGINT" property="idDatabase" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="ID_DATABASE_TYPE" jdbcType="INTEGER" property="idDatabaseType" />
+    <result column="ID_DATABASE_CONTYPE" jdbcType="INTEGER" property="idDatabaseContype" />
+    <result column="HOST_NAME" jdbcType="VARCHAR" property="hostName" />
+    <result column="DATABASE_NAME" jdbcType="VARCHAR" property="databaseName" />
+    <result column="PORT" jdbcType="INTEGER" property="port" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="SERVERNAME" jdbcType="VARCHAR" property="servername" />
+    <result column="DATA_TBS" jdbcType="VARCHAR" property="dataTbs" />
+    <result column="INDEX_TBS" jdbcType="VARCHAR" property="indexTbs" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID_DATABASE, `NAME`, ID_DATABASE_TYPE, ID_DATABASE_CONTYPE, HOST_NAME, DATABASE_NAME, 
+    PORT, USERNAME, `PASSWORD`, SERVERNAME, DATA_TBS, INDEX_TBS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from R_DATABASE
+    where ID_DATABASE = #{idDatabase,jdbcType=BIGINT}
+  </select>
+  <select id="selectDatabaseList" resultType="com.saas.datamiddleend.entity.domain.database.RDatabase">
+    select
+    <include refid="Base_Column_List" />
+    from R_DATABASE
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from R_DATABASE
+    where ID_DATABASE = #{idDatabase,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyProperty="idDatabase" parameterType="RDatabase">
+    insert into R_DATABASE (`NAME`, ID_DATABASE_TYPE, ID_DATABASE_CONTYPE, 
+      HOST_NAME, DATABASE_NAME, PORT, 
+      USERNAME, `PASSWORD`, SERVERNAME, 
+      DATA_TBS, INDEX_TBS)
+    values (#{name,jdbcType=VARCHAR}, #{idDatabaseType,jdbcType=INTEGER}, #{idDatabaseContype,jdbcType=INTEGER}, 
+      #{hostName,jdbcType=VARCHAR}, #{databaseName,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER}, 
+      #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{servername,jdbcType=VARCHAR}, 
+      #{dataTbs,jdbcType=VARCHAR}, #{indexTbs,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyProperty="idDatabase" parameterType="RDatabase">
+    insert into R_DATABASE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `NAME`,
+      </if>
+      <if test="idDatabaseType != null">
+        ID_DATABASE_TYPE,
+      </if>
+      <if test="idDatabaseContype != null">
+        ID_DATABASE_CONTYPE,
+      </if>
+      <if test="hostName != null">
+        HOST_NAME,
+      </if>
+      <if test="databaseName != null">
+        DATABASE_NAME,
+      </if>
+      <if test="port != null">
+        PORT,
+      </if>
+      <if test="username != null">
+        USERNAME,
+      </if>
+      <if test="password != null">
+        `PASSWORD`,
+      </if>
+      <if test="servername != null">
+        SERVERNAME,
+      </if>
+      <if test="dataTbs != null">
+        DATA_TBS,
+      </if>
+      <if test="indexTbs != null">
+        INDEX_TBS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idDatabaseType != null">
+        #{idDatabaseType,jdbcType=INTEGER},
+      </if>
+      <if test="idDatabaseContype != null">
+        #{idDatabaseContype,jdbcType=INTEGER},
+      </if>
+      <if test="hostName != null">
+        #{hostName,jdbcType=VARCHAR},
+      </if>
+      <if test="databaseName != null">
+        #{databaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        #{port,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="servername != null">
+        #{servername,jdbcType=VARCHAR},
+      </if>
+      <if test="dataTbs != null">
+        #{dataTbs,jdbcType=VARCHAR},
+      </if>
+      <if test="indexTbs != null">
+        #{indexTbs,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="RDatabase">
+    update R_DATABASE
+    <set>
+      <if test="name != null">
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idDatabaseType != null">
+        ID_DATABASE_TYPE = #{idDatabaseType,jdbcType=INTEGER},
+      </if>
+      <if test="idDatabaseContype != null">
+        ID_DATABASE_CONTYPE = #{idDatabaseContype,jdbcType=INTEGER},
+      </if>
+      <if test="hostName != null">
+        HOST_NAME = #{hostName,jdbcType=VARCHAR},
+      </if>
+      <if test="databaseName != null">
+        DATABASE_NAME = #{databaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        PORT = #{port,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `PASSWORD` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="servername != null">
+        SERVERNAME = #{servername,jdbcType=VARCHAR},
+      </if>
+      <if test="dataTbs != null">
+        DATA_TBS = #{dataTbs,jdbcType=VARCHAR},
+      </if>
+      <if test="indexTbs != null">
+        INDEX_TBS = #{indexTbs,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID_DATABASE = #{idDatabase,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="RDatabase">
+    update R_DATABASE
+    set `NAME` = #{name,jdbcType=VARCHAR},
+      ID_DATABASE_TYPE = #{idDatabaseType,jdbcType=INTEGER},
+      ID_DATABASE_CONTYPE = #{idDatabaseContype,jdbcType=INTEGER},
+      HOST_NAME = #{hostName,jdbcType=VARCHAR},
+      DATABASE_NAME = #{databaseName,jdbcType=VARCHAR},
+      PORT = #{port,jdbcType=INTEGER},
+      USERNAME = #{username,jdbcType=VARCHAR},
+      `PASSWORD` = #{password,jdbcType=VARCHAR},
+      SERVERNAME = #{servername,jdbcType=VARCHAR},
+      DATA_TBS = #{dataTbs,jdbcType=VARCHAR},
+      INDEX_TBS = #{indexTbs,jdbcType=VARCHAR}
+    where ID_DATABASE = #{idDatabase,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.datamiddleend.dao.trans.RTransformationMapper">
+  <resultMap id="BaseResultMap" type="com.saas.datamiddleend.entity.domain.trans.RTransformation">
+    <id column="ID_TRANSFORMATION" jdbcType="BIGINT" property="idTransformation" />
+    <result column="ID_DIRECTORY" jdbcType="INTEGER" property="idDirectory" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="EXTENDED_DESCRIPTION" jdbcType="VARCHAR" property="extendedDescription" />
+    <result column="TRANS_VERSION" jdbcType="VARCHAR" property="transVersion" />
+    <result column="TRANS_STATUS" jdbcType="INTEGER" property="transStatus" />
+    <result column="ID_STEP_READ" jdbcType="INTEGER" property="idStepRead" />
+    <result column="ID_STEP_WRITE" jdbcType="INTEGER" property="idStepWrite" />
+    <result column="ID_STEP_INPUT" jdbcType="INTEGER" property="idStepInput" />
+    <result column="ID_STEP_OUTPUT" jdbcType="INTEGER" property="idStepOutput" />
+    <result column="ID_STEP_UPDATE" jdbcType="INTEGER" property="idStepUpdate" />
+    <result column="ID_DATABASE_LOG" jdbcType="INTEGER" property="idDatabaseLog" />
+    <result column="TABLE_NAME_LOG" jdbcType="VARCHAR" property="tableNameLog" />
+    <result column="USE_BATCHID" jdbcType="BOOLEAN" property="useBatchid" />
+    <result column="USE_LOGFIELD" jdbcType="BOOLEAN" property="useLogfield" />
+    <result column="ID_DATABASE_MAXDATE" jdbcType="INTEGER" property="idDatabaseMaxdate" />
+    <result column="TABLE_NAME_MAXDATE" jdbcType="VARCHAR" property="tableNameMaxdate" />
+    <result column="FIELD_NAME_MAXDATE" jdbcType="VARCHAR" property="fieldNameMaxdate" />
+    <result column="OFFSET_MAXDATE" jdbcType="DOUBLE" property="offsetMaxdate" />
+    <result column="DIFF_MAXDATE" jdbcType="DOUBLE" property="diffMaxdate" />
+    <result column="CREATED_USER" jdbcType="VARCHAR" property="createdUser" />
+    <result column="CREATED_DATE" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="MODIFIED_USER" jdbcType="VARCHAR" property="modifiedUser" />
+    <result column="MODIFIED_DATE" jdbcType="TIMESTAMP" property="modifiedDate" />
+    <result column="SIZE_ROWSET" jdbcType="INTEGER" property="sizeRowset" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID_TRANSFORMATION, ID_DIRECTORY, `NAME`, DESCRIPTION, EXTENDED_DESCRIPTION, TRANS_VERSION, 
+    TRANS_STATUS, ID_STEP_READ, ID_STEP_WRITE, ID_STEP_INPUT, ID_STEP_OUTPUT, ID_STEP_UPDATE, 
+    ID_DATABASE_LOG, TABLE_NAME_LOG, USE_BATCHID, USE_LOGFIELD, ID_DATABASE_MAXDATE, 
+    TABLE_NAME_MAXDATE, FIELD_NAME_MAXDATE, OFFSET_MAXDATE, DIFF_MAXDATE, CREATED_USER, 
+    CREATED_DATE, MODIFIED_USER, MODIFIED_DATE, SIZE_ROWSET
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from R_TRANSFORMATION
+    where ID_TRANSFORMATION = #{idTransformation,jdbcType=BIGINT}
+  </select>
+  <select id="selectTrans" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from R_TRANSFORMATION
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from R_TRANSFORMATION
+    where ID_TRANSFORMATION = #{idTransformation,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID_TRANSFORMATION" parameterType="com.saas.datamiddleend.entity.domain.trans.RTransformation" >
+    insert into R_TRANSFORMATION (ID_DIRECTORY, `NAME`, DESCRIPTION, 
+      EXTENDED_DESCRIPTION, TRANS_VERSION, TRANS_STATUS, 
+      ID_STEP_READ, ID_STEP_WRITE, ID_STEP_INPUT, 
+      ID_STEP_OUTPUT, ID_STEP_UPDATE, ID_DATABASE_LOG, 
+      TABLE_NAME_LOG, USE_BATCHID, USE_LOGFIELD, 
+      ID_DATABASE_MAXDATE, TABLE_NAME_MAXDATE, FIELD_NAME_MAXDATE, 
+      OFFSET_MAXDATE, DIFF_MAXDATE, CREATED_USER, 
+      CREATED_DATE, MODIFIED_USER, MODIFIED_DATE, 
+      SIZE_ROWSET)
+    values (#{idDirectory,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{extendedDescription,jdbcType=VARCHAR}, #{transVersion,jdbcType=VARCHAR}, #{transStatus,jdbcType=INTEGER}, 
+      #{idStepRead,jdbcType=INTEGER}, #{idStepWrite,jdbcType=INTEGER}, #{idStepInput,jdbcType=INTEGER}, 
+      #{idStepOutput,jdbcType=INTEGER}, #{idStepUpdate,jdbcType=INTEGER}, #{idDatabaseLog,jdbcType=INTEGER}, 
+      #{tableNameLog,jdbcType=VARCHAR}, #{useBatchid,jdbcType=BOOLEAN}, #{useLogfield,jdbcType=BOOLEAN}, 
+      #{idDatabaseMaxdate,jdbcType=INTEGER}, #{tableNameMaxdate,jdbcType=VARCHAR}, #{fieldNameMaxdate,jdbcType=VARCHAR}, 
+      #{offsetMaxdate,jdbcType=DOUBLE}, #{diffMaxdate,jdbcType=DOUBLE}, #{createdUser,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{modifiedUser,jdbcType=VARCHAR}, #{modifiedDate,jdbcType=TIMESTAMP}, 
+      #{sizeRowset,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID_TRANSFORMATION" parameterType="com.saas.datamiddleend.entity.domain.trans.RTransformation">
+    insert into R_TRANSFORMATION
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="idDirectory != null">
+        ID_DIRECTORY,
+      </if>
+      <if test="name != null">
+        `NAME`,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="extendedDescription != null">
+        EXTENDED_DESCRIPTION,
+      </if>
+      <if test="transVersion != null">
+        TRANS_VERSION,
+      </if>
+      <if test="transStatus != null">
+        TRANS_STATUS,
+      </if>
+      <if test="idStepRead != null">
+        ID_STEP_READ,
+      </if>
+      <if test="idStepWrite != null">
+        ID_STEP_WRITE,
+      </if>
+      <if test="idStepInput != null">
+        ID_STEP_INPUT,
+      </if>
+      <if test="idStepOutput != null">
+        ID_STEP_OUTPUT,
+      </if>
+      <if test="idStepUpdate != null">
+        ID_STEP_UPDATE,
+      </if>
+      <if test="idDatabaseLog != null">
+        ID_DATABASE_LOG,
+      </if>
+      <if test="tableNameLog != null">
+        TABLE_NAME_LOG,
+      </if>
+      <if test="useBatchid != null">
+        USE_BATCHID,
+      </if>
+      <if test="useLogfield != null">
+        USE_LOGFIELD,
+      </if>
+      <if test="idDatabaseMaxdate != null">
+        ID_DATABASE_MAXDATE,
+      </if>
+      <if test="tableNameMaxdate != null">
+        TABLE_NAME_MAXDATE,
+      </if>
+      <if test="fieldNameMaxdate != null">
+        FIELD_NAME_MAXDATE,
+      </if>
+      <if test="offsetMaxdate != null">
+        OFFSET_MAXDATE,
+      </if>
+      <if test="diffMaxdate != null">
+        DIFF_MAXDATE,
+      </if>
+      <if test="createdUser != null">
+        CREATED_USER,
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE,
+      </if>
+      <if test="modifiedUser != null">
+        MODIFIED_USER,
+      </if>
+      <if test="modifiedDate != null">
+        MODIFIED_DATE,
+      </if>
+      <if test="sizeRowset != null">
+        SIZE_ROWSET,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="idDirectory != null">
+        #{idDirectory,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="extendedDescription != null">
+        #{extendedDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="transVersion != null">
+        #{transVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="transStatus != null">
+        #{transStatus,jdbcType=INTEGER},
+      </if>
+      <if test="idStepRead != null">
+        #{idStepRead,jdbcType=INTEGER},
+      </if>
+      <if test="idStepWrite != null">
+        #{idStepWrite,jdbcType=INTEGER},
+      </if>
+      <if test="idStepInput != null">
+        #{idStepInput,jdbcType=INTEGER},
+      </if>
+      <if test="idStepOutput != null">
+        #{idStepOutput,jdbcType=INTEGER},
+      </if>
+      <if test="idStepUpdate != null">
+        #{idStepUpdate,jdbcType=INTEGER},
+      </if>
+      <if test="idDatabaseLog != null">
+        #{idDatabaseLog,jdbcType=INTEGER},
+      </if>
+      <if test="tableNameLog != null">
+        #{tableNameLog,jdbcType=VARCHAR},
+      </if>
+      <if test="useBatchid != null">
+        #{useBatchid,jdbcType=BOOLEAN},
+      </if>
+      <if test="useLogfield != null">
+        #{useLogfield,jdbcType=BOOLEAN},
+      </if>
+      <if test="idDatabaseMaxdate != null">
+        #{idDatabaseMaxdate,jdbcType=INTEGER},
+      </if>
+      <if test="tableNameMaxdate != null">
+        #{tableNameMaxdate,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldNameMaxdate != null">
+        #{fieldNameMaxdate,jdbcType=VARCHAR},
+      </if>
+      <if test="offsetMaxdate != null">
+        #{offsetMaxdate,jdbcType=DOUBLE},
+      </if>
+      <if test="diffMaxdate != null">
+        #{diffMaxdate,jdbcType=DOUBLE},
+      </if>
+      <if test="createdUser != null">
+        #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedDate != null">
+        #{modifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sizeRowset != null">
+        #{sizeRowset,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.saas.datamiddleend.entity.domain.trans.RTransformation">
+    update R_TRANSFORMATION
+    <set>
+      <if test="idDirectory != null">
+        ID_DIRECTORY = #{idDirectory,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        `NAME` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="extendedDescription != null">
+        EXTENDED_DESCRIPTION = #{extendedDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="transVersion != null">
+        TRANS_VERSION = #{transVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="transStatus != null">
+        TRANS_STATUS = #{transStatus,jdbcType=INTEGER},
+      </if>
+      <if test="idStepRead != null">
+        ID_STEP_READ = #{idStepRead,jdbcType=INTEGER},
+      </if>
+      <if test="idStepWrite != null">
+        ID_STEP_WRITE = #{idStepWrite,jdbcType=INTEGER},
+      </if>
+      <if test="idStepInput != null">
+        ID_STEP_INPUT = #{idStepInput,jdbcType=INTEGER},
+      </if>
+      <if test="idStepOutput != null">
+        ID_STEP_OUTPUT = #{idStepOutput,jdbcType=INTEGER},
+      </if>
+      <if test="idStepUpdate != null">
+        ID_STEP_UPDATE = #{idStepUpdate,jdbcType=INTEGER},
+      </if>
+      <if test="idDatabaseLog != null">
+        ID_DATABASE_LOG = #{idDatabaseLog,jdbcType=INTEGER},
+      </if>
+      <if test="tableNameLog != null">
+        TABLE_NAME_LOG = #{tableNameLog,jdbcType=VARCHAR},
+      </if>
+      <if test="useBatchid != null">
+        USE_BATCHID = #{useBatchid,jdbcType=BOOLEAN},
+      </if>
+      <if test="useLogfield != null">
+        USE_LOGFIELD = #{useLogfield,jdbcType=BOOLEAN},
+      </if>
+      <if test="idDatabaseMaxdate != null">
+        ID_DATABASE_MAXDATE = #{idDatabaseMaxdate,jdbcType=INTEGER},
+      </if>
+      <if test="tableNameMaxdate != null">
+        TABLE_NAME_MAXDATE = #{tableNameMaxdate,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldNameMaxdate != null">
+        FIELD_NAME_MAXDATE = #{fieldNameMaxdate,jdbcType=VARCHAR},
+      </if>
+      <if test="offsetMaxdate != null">
+        OFFSET_MAXDATE = #{offsetMaxdate,jdbcType=DOUBLE},
+      </if>
+      <if test="diffMaxdate != null">
+        DIFF_MAXDATE = #{diffMaxdate,jdbcType=DOUBLE},
+      </if>
+      <if test="createdUser != null">
+        CREATED_USER = #{createdUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedUser != null">
+        MODIFIED_USER = #{modifiedUser,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedDate != null">
+        MODIFIED_DATE = #{modifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sizeRowset != null">
+        SIZE_ROWSET = #{sizeRowset,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID_TRANSFORMATION = #{idTransformation,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.saas.datamiddleend.entity.domain.trans.RTransformation">
+    update R_TRANSFORMATION
+    set ID_DIRECTORY = #{idDirectory,jdbcType=INTEGER},
+      `NAME` = #{name,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      EXTENDED_DESCRIPTION = #{extendedDescription,jdbcType=VARCHAR},
+      TRANS_VERSION = #{transVersion,jdbcType=VARCHAR},
+      TRANS_STATUS = #{transStatus,jdbcType=INTEGER},
+      ID_STEP_READ = #{idStepRead,jdbcType=INTEGER},
+      ID_STEP_WRITE = #{idStepWrite,jdbcType=INTEGER},
+      ID_STEP_INPUT = #{idStepInput,jdbcType=INTEGER},
+      ID_STEP_OUTPUT = #{idStepOutput,jdbcType=INTEGER},
+      ID_STEP_UPDATE = #{idStepUpdate,jdbcType=INTEGER},
+      ID_DATABASE_LOG = #{idDatabaseLog,jdbcType=INTEGER},
+      TABLE_NAME_LOG = #{tableNameLog,jdbcType=VARCHAR},
+      USE_BATCHID = #{useBatchid,jdbcType=BOOLEAN},
+      USE_LOGFIELD = #{useLogfield,jdbcType=BOOLEAN},
+      ID_DATABASE_MAXDATE = #{idDatabaseMaxdate,jdbcType=INTEGER},
+      TABLE_NAME_MAXDATE = #{tableNameMaxdate,jdbcType=VARCHAR},
+      FIELD_NAME_MAXDATE = #{fieldNameMaxdate,jdbcType=VARCHAR},
+      OFFSET_MAXDATE = #{offsetMaxdate,jdbcType=DOUBLE},
+      DIFF_MAXDATE = #{diffMaxdate,jdbcType=DOUBLE},
+      CREATED_USER = #{createdUser,jdbcType=VARCHAR},
+      CREATED_DATE = #{createdDate,jdbcType=TIMESTAMP},
+      MODIFIED_USER = #{modifiedUser,jdbcType=VARCHAR},
+      MODIFIED_DATE = #{modifiedDate,jdbcType=TIMESTAMP},
+      SIZE_ROWSET = #{sizeRowset,jdbcType=INTEGER}
+    where ID_TRANSFORMATION = #{idTransformation,jdbcType=BIGINT}
+  </update>
+</mapper>
