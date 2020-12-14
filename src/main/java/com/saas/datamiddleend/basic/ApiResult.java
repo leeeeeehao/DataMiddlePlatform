@@ -51,6 +51,14 @@ public class ApiResult<T> implements Serializable {
     }
 
     /**
+     * @param <T>
+     * @return
+     */
+    public static <T> ApiResult<T> ok(String message) {
+        return new ApiResult<>(true, message, ResultCodeEnums.SUCCESS.getType(), null);
+    }
+
+    /**
      * 失败
      *
      * @param message 信息
@@ -64,6 +72,10 @@ public class ApiResult<T> implements Serializable {
 
     public static <T> ApiResult<T> fail() {
         return new ApiResult<>(false, "请求失败", ResultCodeEnums.FAIL.getType(), null);
+    }
+
+    public static <T> ApiResult<T> fail(String code, String message) {
+        return new ApiResult<>(false, message, code, null);
     }
 
     public Boolean getSuccess() {

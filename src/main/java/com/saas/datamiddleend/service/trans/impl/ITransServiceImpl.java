@@ -11,6 +11,7 @@ import com.saas.datamiddleend.entity.dto.trans.DelTranDTO;
 import com.saas.datamiddleend.entity.dto.trans.EditTransDTO;
 import com.saas.datamiddleend.entity.dto.trans.ExecuteTransDTO;
 import com.saas.datamiddleend.entity.vo.trans.FindTransListResVO;
+import com.saas.datamiddleend.enums.ResultCodeEnums;
 import com.saas.datamiddleend.service.trans.ITransService;
 import lombok.extern.slf4j.Slf4j;
 import org.pentaho.di.core.exception.KettleException;
@@ -192,10 +193,11 @@ public class ITransServiceImpl implements ITransService {
             List<FindTransListResVO> findTransListResVOS = new ArrayList<>();
 
             if (pageIndex != null && pageSize != null) {
-                PageHelper.startPage(pageSize, pageIndex);
+                PageHelper.startPage(pageIndex, pageSize);
             }
             //分页获取所有转换列表
             List<RTransformation> rTransformations = rTransformationMapper.selectTrans();
+            PageInfo<RTransformation> pageInfo = new PageInfo<>(rTransformations);
             for (RTransformation transformation : rTransformations) {
                 transformation.setCreatedDate(format.parse(format.format(transformation.getCreatedDate())));
                 transformation.setModifiedDate(format.parse(format.format(transformation.getModifiedDate())));
@@ -204,6 +206,9 @@ public class ITransServiceImpl implements ITransService {
                 findTransListResVOS.add(findTransListResVO);
             }
             PageInfo<FindTransListResVO> findTransListResVOPageInfo = new PageInfo<>(findTransListResVOS);
+            findTransListResVOPageInfo.setTotal(pageInfo.getTotal());
+            findTransListResVOPageInfo.setPageNum(pageInfo.getPageNum());
+            findTransListResVOPageInfo.setPageSize(pageInfo.getPageSize());
             log.info("分页查询转换列表");
             return ApiResult.ok(findTransListResVOPageInfo);
         } catch (Exception e) {
@@ -229,6 +234,9 @@ public class ITransServiceImpl implements ITransService {
     @Override
     public ApiResult delTran(DelTranDTO delTranDTO) {
         try {
+            if (ObjectUtils.isEmpty(rTransformationMapper.selectTransByName(delTranDTO.getTranName()))) {
+                return ApiResult.fail(ResultCodeEnums.EXCEPTIONS.getType(), "删除失败，没有这个转换");
+            }
             KettleDatabaseRepository repository = App.getInstance().getRepository();
             RepositoryDirectoryInterface dir = repository.findDirectory("/");
             ObjectId id = repository.getTransformationID(delTranDTO.getTranName(), dir);

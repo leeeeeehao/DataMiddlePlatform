@@ -47,6 +47,13 @@
     <include refid="Base_Column_List" />
     from R_TRANSFORMATION
   </select>
+
+  <select id="selectTransByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from R_TRANSFORMATION
+    where NAME = #{name}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from R_TRANSFORMATION
     where ID_TRANSFORMATION = #{idTransformation,jdbcType=BIGINT}

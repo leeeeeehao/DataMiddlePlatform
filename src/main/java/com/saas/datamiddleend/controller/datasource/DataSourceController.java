@@ -6,6 +6,7 @@ import com.saas.datamiddleend.entity.dto.datasource.CreateDataSourceDTO;
 import com.saas.datamiddleend.entity.dto.datasource.DelDataSourceDTO;
 import com.saas.datamiddleend.entity.dto.datasource.FindDataSourceInfoDTO;
 import com.saas.datamiddleend.entity.vo.datasource.CreateDataSourceVO;
+import com.saas.datamiddleend.entity.vo.datasource.DelDataSourceVO;
 import com.saas.datamiddleend.entity.vo.datasource.FindDataSourceInfoVO;
 import com.saas.datamiddleend.service.datasource.IDataSourceService;
 import io.swagger.annotations.Api;
@@ -50,9 +51,9 @@ public class DataSourceController {
     }
 
     @ApiOperation("删除数据源")
-    @DeleteMapping("/del/{databaseName}")
-    public ApiResult del(@PathVariable("databaseName") @Valid String databaseName) {
-        return iDataSourceService.delDataSource(DelDataSourceDTO.builder().databaseName(databaseName).build());
+    @PostMapping("/del")
+    public ApiResult del(@RequestBody @Valid DelDataSourceVO delDataSourceVO) {
+        return iDataSourceService.delDataSource(new DozerBeanMapper().map(delDataSourceVO, DelDataSourceDTO.class));
     }
 
     @ApiOperation("获取支持数据库类型")

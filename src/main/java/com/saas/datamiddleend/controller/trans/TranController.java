@@ -52,7 +52,7 @@ public class TranController {
     }
 
     @ApiOperation("获取转换日志")
-    @GetMapping("/PreviewLogs/{logChannelId}")
+    @GetMapping("/previewLogs/{logChannelId}")
     public ApiResult PreviewLogs(@PathVariable(value = "logChannelId") String logChannelId) {
         return iTransService.previewLogs(logChannelId);
     }
@@ -71,7 +71,7 @@ public class TranController {
     }
 
     @ApiOperation("删除转换")
-    @DeleteMapping("/del")
+    @PostMapping("/del")
     public ApiResult del(@RequestBody DelTranVO delTranVO) {
         return iTransService.delTran(new DozerBeanMapper().map(delTranVO, DelTranDTO.class));
     }

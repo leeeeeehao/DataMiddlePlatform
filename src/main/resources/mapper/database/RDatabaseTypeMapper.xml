@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saas.datamiddleend.dao.database.RDatabaseTypeMapper">
+  <resultMap id="BaseResultMap" type="com.saas.datamiddleend.entity.domain.database.RDatabaseType">
+    <id column="ID_DATABASE_TYPE" jdbcType="BIGINT" property="idDatabaseType" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID_DATABASE_TYPE, CODE, DESCRIPTION
+  </sql>
+  <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from R_DATABASE_TYPE
+    where ID_DATABASE_TYPE = #{idDatabaseType,jdbcType=BIGINT}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from R_DATABASE_TYPE
+    where ID_DATABASE_TYPE = #{idDatabaseType,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert"  parameterType="RDatabaseType" >
+    insert into R_DATABASE_TYPE (CODE, DESCRIPTION)
+    values (#{code,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective"  parameterType="RDatabaseType" >
+    insert into R_DATABASE_TYPE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="RDatabaseType">
+    update R_DATABASE_TYPE
+    <set>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID_DATABASE_TYPE = #{idDatabaseType,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="RDatabaseType">
+    update R_DATABASE_TYPE
+    set CODE = #{code,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR}
+    where ID_DATABASE_TYPE = #{idDatabaseType,jdbcType=BIGINT}
+  </update>
+</mapper>

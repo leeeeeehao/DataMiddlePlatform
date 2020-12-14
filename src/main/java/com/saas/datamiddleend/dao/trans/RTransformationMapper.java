@@ -24,4 +24,11 @@ public interface RTransformationMapper {
      * @return
      */
     List<RTransformation> selectTrans();
+
+    /**
+     * 根据名称查询转换
+     * @param transName
+     * @return
+     */
+    RTransformation selectTransByName(String transName);
 }

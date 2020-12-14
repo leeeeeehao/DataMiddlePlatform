@@ -13,95 +13,99 @@ import java.util.*;
 
 public class DatabaseType implements PluginTypeListener {
 
-	private static final DatabaseType instance = new DatabaseType();
-	
-	public SortedMap<String, DatabaseInterface> connectionMap = new TreeMap<String, DatabaseInterface>();	//key=pluginName, value=plugin
-	public Map<String, String> connectionNametoID = new HashMap<String, String>();	// key=pluginName, value=pluginId
-	
-	private DatabaseType() {
-		PluginRegistry registry = PluginRegistry.getInstance();
-		List<PluginInterface> plugins = registry.getPlugins(DatabasePluginType.class);
+    private static final DatabaseType instance = new DatabaseType();
 
-		registry.addPluginListener(DatabasePluginType.class, this);
-		for (PluginInterface plugin : plugins) {
-			this.pluginAdded(plugin);
-		}
-	}
-	
-	public static DatabaseType instance() {
-		return instance;
-	}
-	
-	public List loadSupportedDatabaseTypes() {
-		ArrayList list = new ArrayList();
-		for ( String value : connectionMap.keySet() ) {
-	    	LinkedHashMap jsonObject = new LinkedHashMap();
-	    	jsonObject.put("value", connectionNametoID.get(value));
-	    	jsonObject.put("text", value);
-	    	list.add(jsonObject);
-	    }
-		return list;
-	}
-	
-	public List loadSupportedDatabaseMethodsByTypeId(String typeId) {
-		String name = null;
-		ArrayList list = new ArrayList();
-		Iterator<Map.Entry<String, String>> iter = connectionNametoID.entrySet().iterator();
-		while(iter.hasNext()) {
-			Map.Entry<String, String> entry = iter.next();
-			if(typeId.equals(entry.getValue())) {
-				name = entry.getKey();
-				break;
-			}
-		}
-		if(name == null)
-			return list;
-		
-		DatabaseInterface database = connectionMap.get( name );
-		int[] acc = database.getAccessTypeList();
+    public SortedMap<String, DatabaseInterface> connectionMap = new TreeMap<String, DatabaseInterface>();    //key=pluginName, value=plugin
+    public Map<String, String> connectionNametoID = new HashMap<String, String>();    // key=pluginName, value=pluginId
 
-	    for ( int value : acc ) {
-	    	LinkedHashMap jsonObject = new LinkedHashMap();
-	    	jsonObject.put("value", value);
-	    	jsonObject.put("text", DatabaseMeta.getAccessTypeDescLong( value ));
-	    	list.add(jsonObject);
-	    }
-	    
-	    return list;
-	}
+    private DatabaseType() {
+        PluginRegistry registry = PluginRegistry.getInstance();
+        List<PluginInterface> plugins = registry.getPlugins(DatabasePluginType.class);
 
-	@Override
-	public void pluginAdded(Object serviceObject) {
-		PluginInterface plugin = (PluginInterface) serviceObject;
-		String pluginName = plugin.getName();
-		try {
-			DatabaseInterface databaseInterface = (DatabaseInterface) PluginRegistry.getInstance().loadClass(plugin);
-			databaseInterface.setPluginId(plugin.getIds()[0]);
-			databaseInterface.setName(pluginName);
-			
-			connectionMap.put(pluginName, databaseInterface);
-			connectionNametoID.put(pluginName, databaseInterface.getPluginId());
-		} catch (KettleException e) {
-			String message = "Could not create connection entry for " + pluginName + ".  " + e.getCause().getClass().getName();
-			System.out.println(message);
-			LogChannel.GENERAL.logError(message);
-		}
-	}
+        registry.addPluginListener(DatabasePluginType.class, this);
+        for (PluginInterface plugin : plugins) {
+            this.pluginAdded(plugin);
+        }
+    }
 
-	@Override
-	public void pluginChanged(Object serviceObject) {
-		PluginInterface plugin = (PluginInterface) serviceObject;
-		String pluginName = plugin.getName();
-		
-		connectionMap.remove(pluginName);
-		connectionNametoID.remove(pluginName);
-	}
+    public static DatabaseType instance() {
+        return instance;
+    }
 
-	@Override
-	public void pluginRemoved(Object serviceObject) {
-		pluginRemoved(serviceObject);
-		pluginAdded(serviceObject);
-	}
-	
-	
+    public List loadSupportedDatabaseTypes() {
+        ArrayList list = new ArrayList();
+        for (String value : connectionMap.keySet()) {
+            LinkedHashMap jsonObject = new LinkedHashMap();
+            jsonObject.put("value", connectionNametoID.get(value));
+            jsonObject.put("text", value);
+            list.add(jsonObject);
+        }
+        return list;
+    }
+
+    public List loadSupportedDatabaseMethodsByTypeId(String typeId) {
+        String name = null;
+        ArrayList list = new ArrayList();
+        Iterator<Map.Entry<String, String>> iter = connectionNametoID.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String, String> entry = iter.next();
+            if (typeId.equals(entry.getValue())) {
+                name = entry.getKey();
+                break;
+            }
+        }
+        if (name == null)
+            return list;
+
+        DatabaseInterface database = connectionMap.get(name);
+        int[] acc = database.getAccessTypeList();
+
+        for (int value : acc) {
+            LinkedHashMap jsonObject = new LinkedHashMap();
+            jsonObject.put("value", value);
+            jsonObject.put("text", DatabaseMeta.getAccessTypeDescLong(value));
+            list.add(jsonObject);
+        }
+
+        return list;
+    }
+
+    @Override
+    public void pluginAdded(Object serviceObject) {
+        PluginInterface plugin = (PluginInterface) serviceObject;
+        String pluginName = plugin.getName();
+        try {
+            DatabaseInterface databaseInterface = (DatabaseInterface) PluginRegistry.getInstance().loadClass(plugin);
+            databaseInterface.setPluginId(plugin.getIds()[0]);
+            databaseInterface.setName(pluginName);
+
+            connectionMap.put(pluginName, databaseInterface);
+            connectionNametoID.put(pluginName, databaseInterface.getPluginId());
+        } catch (KettleException e) {
+            String message = "Could not create connection entry for " + pluginName + ".  " + e.getCause().getClass().getName();
+            System.out.println(message);
+            LogChannel.GENERAL.logError(message);
+        }
+    }
+
+    @Override
+    public void pluginChanged(Object serviceObject) {
+        PluginInterface plugin = (PluginInterface) serviceObject;
+        String pluginName = plugin.getName();
+
+        connectionMap.remove(pluginName);
+        connectionNametoID.remove(pluginName);
+    }
+
+    @Override
+    public void pluginRemoved(Object serviceObject) {
+        pluginRemoved(serviceObject);
+        pluginAdded(serviceObject);
+    }
+
+    public static void main(String[] args) {
+        DatabaseType databaseType = new DatabaseType();
+        databaseType.loadSupportedDatabaseTypes();
+    }
+
 }

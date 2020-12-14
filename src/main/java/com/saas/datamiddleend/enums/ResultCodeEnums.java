@@ -9,7 +9,8 @@ package com.saas.datamiddleend.enums;
  */
 public enum ResultCodeEnums {
     SUCCESS("200", "请求成功"),
-    FAIL("500", "请求失败");
+    FAIL("500", "请求失败"),
+    EXCEPTIONS("400","请求异常");
 
     private String type;
 

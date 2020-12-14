@@ -1,6 +1,6 @@
 #端口号
 server:
-  port: 9007
+  port: 9005
   servlet:
     context-path: /datamiddleend/
 
@@ -42,6 +42,6 @@ mybatis:
 #分页工具
 pagehelper:
   helperDialect: mysql
-  reasonable: false
+  reasonable: true
   supportMethodsArguments: true
   params: count=countSql

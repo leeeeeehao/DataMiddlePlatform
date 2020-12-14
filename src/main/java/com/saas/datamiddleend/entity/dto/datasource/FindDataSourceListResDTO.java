@@ -26,6 +26,11 @@ public class FindDataSourceListResDTO implements Serializable {
     private Long id;
 
     /**
+     * 数据源名称
+     */
+    private String name;
+
+    /**
      * 数据库名称
      */
     private String databaseName;
@@ -44,7 +49,6 @@ public class FindDataSourceListResDTO implements Serializable {
      * 主机端口
      */
     private Integer port;
-
 
 
 }

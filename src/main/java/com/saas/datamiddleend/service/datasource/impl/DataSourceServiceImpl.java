@@ -11,11 +11,9 @@ import com.saas.datamiddleend.basic.DatabaseType;
 import com.saas.datamiddleend.basic.PageBase;
 import com.saas.datamiddleend.config.App;
 import com.saas.datamiddleend.dao.database.RDatabaseMapper;
+import com.saas.datamiddleend.dao.database.RDatabaseTypeMapper;
 import com.saas.datamiddleend.entity.domain.database.RDatabase;
-import com.saas.datamiddleend.entity.dto.datasource.CreateDataSourceDTO;
-import com.saas.datamiddleend.entity.dto.datasource.DelDataSourceDTO;
-import com.saas.datamiddleend.entity.dto.datasource.FindDataSourceInfoDTO;
-import com.saas.datamiddleend.entity.dto.datasource.FindDataSourceListResDTO;
+import com.saas.datamiddleend.entity.dto.datasource.*;
 import com.saas.datamiddleend.enums.NodeTypeEnums;
 import com.saas.datamiddleend.service.datasource.IDataSourceService;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +46,9 @@ public class DataSourceServiceImpl implements IDataSourceService {
     @Autowired
     private RDatabaseMapper rDatabaseMapper;
 
+    @Autowired
+    private RDatabaseTypeMapper rDatabaseTypeMapper;
+
     public static final LoggingObjectInterface loggingObject = new SimpleLoggingObject("DataSourceServiceImpl", LoggingObjectType.DATABASE, null);
 
     @Override
@@ -77,21 +78,26 @@ public class DataSourceServiceImpl implements IDataSourceService {
             List<FindDataSourceListResDTO> resList = new ArrayList<>();
             PageHelper.startPage(pageBase.getPageIndex(), pageBase.getPageSize());
             List<RDatabase> databases = rDatabaseMapper.selectDatabaseList();
+            PageInfo<RDatabase> pageInfo = new PageInfo<>(databases);
             databases.stream().forEach(item -> {
                 FindDataSourceListResDTO res = FindDataSourceListResDTO
                         .builder()
                         .id(item.getIdDatabase())
+                        .name(item.getName())
                         .databaseName(item.getDatabaseName())
-                        .databaseType(item.getIdDatabaseType().toString())
+                        .databaseType(rDatabaseTypeMapper.selectById(Long.valueOf(item.getIdDatabaseType())).getCode())
                         .hostName(item.getHostName())
                         .port(item.getPort())
                         .build();
 
                 resList.add(res);
             });
-            PageInfo<FindDataSourceListResDTO> pageInfo = new PageInfo(resList);
+            PageInfo<FindDataSourceListResDTO> newPageInfo = new PageInfo(resList);
+            newPageInfo.setTotal(pageInfo.getTotal());
+            newPageInfo.setPageNum(pageInfo.getPageNum());
+            newPageInfo.setPageSize(pageInfo.getPageSize());
             log.info("查询数据源列表成功");
-            return ApiResult.ok(pageInfo);
+            return ApiResult.ok(newPageInfo);
         } catch (Exception e) {
             log.error("查询数据源失败,原因{}", e.toString());
             return ApiResult.fail("查询数据源失败", null);
@@ -131,30 +137,38 @@ public class DataSourceServiceImpl implements IDataSourceService {
                         for (String tableName : tables)
                             jsonArray.add(DatabaseNode.initNode(tableName, schema, "datatable", true));
                     }
-                } else if (NodeTypeEnums.NODE_DATA.getType().equals(findDataSourceInfoDTO.getNodeId()) && !ObjectUtils.isEmpty(findDataSourceInfoDTO.getLimit())) {//如果是请求字段名
+                } else if (NodeTypeEnums.NODE_DATA.getType().equals(findDataSourceInfoDTO.getNodeId())) {//如果是请求字段名
 
                     db.connect();
                     //获取表字段输出为数组列表
                     RowMetaInterface fields = db.getTableFields(findDataSourceInfoDTO.getTableName());
 
                     if (fields != null) {
-                        List<String> fieldList = new ArrayList<>();
+                        List<FindFieldsDTO> fieldList = new ArrayList<>();
                         for (int i = 0; i < fields.size(); i++) {
                             ValueMetaInterface field = fields.getValueMeta(i);
-                            fieldList.add(field.getName());
+                            FindFieldsDTO findFieldsDTO = FindFieldsDTO
+                                    .builder()
+                                    .id(i + 1)
+                                    .fieldName(field.getName())
+                                    .filedType(field.getTypeDesc())
+                                    .filedLength(field.getLength())
+                                    .build();
+                            fieldList.add(findFieldsDTO);
                         }
-                        String[] fieldArray = new String[fields.size()];
-                        fieldList.toArray(fieldArray);
-                        JSONObject jsonObject = new JSONObject();
-                        jsonObject.put("field", fieldArray);
-                        jsonArray.add(jsonObject);
+                        db.disconnect();
+                        log.info("查询数据源信息成功");
+                        return ApiResult.ok(fieldList);
+//                        JSONObject jsonObject = new JSONObject();
+//                        jsonObject.put("field", fieldList);
+//                        jsonArray.add(jsonObject);
                     }
 
-                    //获取字段值输出为数组列表
-                    List<Object[]> objects = db.getFirstRows(findDataSourceInfoDTO.getTableName(), findDataSourceInfoDTO.getLimit());
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("value", objects);
-                    jsonArray.add(jsonObject);
+//                    //获取字段值输出为数组列表
+//                    List<Object[]> objects = db.getFirstRows(findDataSourceInfoDTO.getTableName(), findDataSourceInfoDTO.getLimit());
+//                    JSONObject jsonObject = new JSONObject();
+//                    jsonObject.put("value", objects);
+//                    jsonArray.add(jsonObject);
                 }
 
                 db.disconnect();

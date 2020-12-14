@@ -1,6 +1,7 @@
 package com.saas.datamiddleend.config;
 
 import com.saas.datamiddleend.basic.ApiResult;
+import com.saas.datamiddleend.enums.ResultCodeEnums;
 import org.pentaho.di.core.exception.KettleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public class GlobalExceptionConfiguration {
         }
         //返回自定义错误格式
         fieldError.getDefaultMessage();
-        return ApiResult.fail(fieldError.getDefaultMessage(), null);
+        return ApiResult.fail(ResultCodeEnums.EXCEPTIONS.getType(), fieldError.getDefaultMessage());
     }
 
 

@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan(basePackages = {"com.saas.datamiddleend.dao"})
-public class KettleApplication {
+public class DataMiddlendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KettleApplication.class, args);
+        SpringApplication.run(DataMiddlendApplication.class, args);
     }
 
 }
